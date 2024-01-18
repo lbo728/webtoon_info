@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:webtoon_info/models/webtoon_detail_model.dart';
 import 'package:webtoon_info/models/webtoon_episode_model.dart';
 import 'package:webtoon_info/services/api_service.dart';
+import 'package:webtoon_info/widgets/episode_widget.dart';
 
 class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
@@ -37,14 +39,16 @@ class _DetailScreenState extends State<DetailScreen> {
         surfaceTintColor: Colors.white,
         shadowColor: Colors.black,
         backgroundColor: Colors.white,
-        foregroundColor: Colors.green,
+        foregroundColor: Colors.black87,
+        centerTitle: false,
         title: Text(
           widget.title,
           style: const TextStyle(
-            fontSize: 24,
+            fontSize: 18,
             fontWeight: FontWeight.w400,
           ),
         ),
+        toolbarHeight: 56,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -157,39 +161,15 @@ class _DetailScreenState extends State<DetailScreen> {
                               child: Column(
                                 children: [
                                   for (var episode in snapshot.data!)
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 24, vertical: 16),
-                                        decoration: const BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                              width: 1,
-                                              color: Color.fromARGB(
-                                                  255, 234, 234, 234),
-                                            ),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(episode.title),
-                                            const Icon(
-                                              Icons.chevron_right_rounded,
-                                            )
-                                          ],
-                                        ),
-                                      ),
+                                    Episode(
+                                      episode: episode,
+                                      webtoonId: widget.id,
                                     )
                                 ],
                               ),
                             );
                           }
-                          return const Text('오우 쉿');
+                          return const Text('Loading...');
                         },
                       )
                     ],
