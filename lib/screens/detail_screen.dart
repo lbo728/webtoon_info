@@ -46,8 +46,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+      body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(
@@ -90,55 +89,109 @@ class _DetailScreenState extends State<DetailScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        snapshot.data!.about,
-                        style: const TextStyle(
-                          fontSize: 16,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              snapshot.data!.about,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 224, 224, 224),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                snapshot.data!.genre,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255, 107, 107, 107),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  '연령',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFFA2A2A2),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  snapshot.data!.age,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(
                         height: 16,
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 224, 224, 224),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          snapshot.data!.genre,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Color.fromARGB(255, 107, 107, 107),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            '연령',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFFA2A2A2),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            snapshot.data!.age,
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
+                      FutureBuilder(
+                        future: episodes,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 48),
+                              child: Column(
+                                children: [
+                                  for (var episode in snapshot.data!)
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24, vertical: 16),
+                                        decoration: const BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              width: 1,
+                                              color: Color.fromARGB(
+                                                  255, 234, 234, 234),
+                                            ),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(episode.title),
+                                            const Icon(
+                                              Icons.chevron_right_rounded,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              ),
+                            );
+                          }
+                          return const Text('오우 쉿');
+                        },
+                      )
                     ],
                   );
                 }
